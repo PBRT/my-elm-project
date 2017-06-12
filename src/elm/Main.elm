@@ -1,63 +1,43 @@
 module Main exposing (..)
+
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing ( onClick )
+-- App custom
+import State.Types as T
+import State.State as S
 
 -- component import example
-import Components.Hello exposing ( hello )
+import Components.Navigation exposing ( navigation )
 
+-- Pages
+import Containers.Home.View exposing ( home )
 
--- APP
-main : Program Never Int Msg
-main =
-  Html.beginnerProgram { model = model, view = view, update = update }
-
-
--- MODEL
-type alias Model = Int
-
-model : number
-model = 0
-
-
--- UPDATE
-type Msg = NoOp | Increment
-
-update : Msg -> Model -> Model
-update msg model =
-  case msg of
-    NoOp -> model
-    Increment -> model + 1
-
+-- INIT
+init : ( T.Model, Cmd T.Msg )
+init = ( S.model , Cmd.none )
 
 -- VIEW
--- Html is defined as: elem [ attribs ][ children ]
--- CSS can be applied via class names or inline style attrib
-view : Model -> Html Msg
+view : T.Model -> Html T.Msg
 view model =
-  div [ class "container", style [("margin-top", "30px"), ( "text-align", "center" )] ][    -- inline CSS (literal)
-    div [ class "row" ][
+  div [ class "container", style [("margin-top", "60px"), ( "text-align", "center" )] ][    -- inline CSS (literal)
+    div [] [ navigation "SUCE" ]
+    , div [ class "row" ][
       div [ class "col-xs-12" ][
-        div [ class "jumbotron" ][
-          img [ src "static/img/elm.jpg", style styles.img ] []                             -- inline CSS (via var)
-          , hello model                                                                     -- ext 'hello' component (takes 'model' as arg)
-          , p [] [ text ( "Elm Webpack Starter" ) ]
-          , button [ class "btn btn-primary btn-lg", onClick Increment ] [                  -- click handler
-            span[ class "glyphicon glyphicon-star" ][]                                      -- glyphicon
-            , span[][ text "FTW!" ]
-          ]
-        ]
+        home model.home
       ]
     ]
   ]
 
+-- SUBSCRIBTIONS
+subscriptions : T.Model -> Sub T.Msg
+subscriptions model = Sub.none
 
--- CSS STYLES
-styles : { img : List ( String, String ) }
-styles =
-  {
-    img =
-      [ ( "width", "33%" )
-      , ( "border", "4px solid #337AB7")
-      ]
-  }
+-- APP
+main : Program Never T.Model T.Msg
+main =
+  program
+    { view = view
+    , update = S.update
+    , init = init
+    , subscriptions = subscriptions
+    }
