@@ -20,5 +20,34 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
   width: 100%;
   margin: 30px;
   font-size: 16px;
-  text-align: center;
+  text-align: left;
+  display: table;
+}
+
+.inline {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.list {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.spinner-container {
+  font-size: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.spinner {
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
 }

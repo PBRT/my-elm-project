@@ -10,16 +10,21 @@ import RemoteData exposing (WebData)
 import State.Types as T
 import Containers.Home.Types as HomeTypes
 
+spinner: Html T.Msg
+spinner = div [class "spinner-container", style [("marginLeft", "40px")]] [
+    span [ class "spinner glyphicon glyphicon-repeat" ] []
+  ]
+
 renderTodo: HomeTypes.Todo -> Html T.Msg
-renderTodo todo = div [] [(text todo.title)]
+renderTodo todo = div [class "list-group-item"] [(text todo.title)]
 
 maybeList : WebData (List HomeTypes.Todo) -> Html T.Msg
 maybeList response =
   case response of
     RemoteData.NotAsked -> text ""
-    RemoteData.Loading -> text "Loading..."
-    RemoteData.Success todos -> div [] (List.map renderTodo todos)
-    RemoteData.Failure error -> text (toString error)
+    RemoteData.Loading -> spinner
+    RemoteData.Success todos -> div [class "list-group list"] (List.map renderTodo todos)
+    RemoteData.Failure error -> text "Something went wrong"
 
 -- hello component
 home : HomeTypes.Model -> Html T.Msg
@@ -27,16 +32,28 @@ home model =
   let test = model.number in
   div [] [
     div [ class "classic-container" ] [
-      div [ style [("marginBottom", "10px")]] [ text("Current number: " ++ toString test) ]
-      , button [ class "btn btn-primary btn-lg"
-                , onClick (T.Home <| HomeTypes.IncrementHome) ]
-                [ text("Increment me")]
+      button [ class "btn btn-primary"
+              , style [("marginRight", "10px"), ("width", "120px")]
+              , onClick (T.Home <| HomeTypes.IncrementHome) ]
+             [ text("Increment me")]
+      , div [ class "inline"] [ text("Current number: " ++ toString test) ]
     ]
     , div [ class "classic-container" ] [
-        div [ style [("marginBottom", "10px")]] [ text("Current number: " ++ toString test) ]
-        , button [ class "btn btn-primary btn-lg"
-                  , onClick (T.FetchTodos) ]
-                  [ text("Fetch todos")]
+        button [ class "btn btn-primary"
+                , style [("marginRight", "10px"), ("width", "120px")]
+                , onClick (T.FetchTodos) ]
+                [ text("Fetch todos")]
         , maybeList model.todos
       ]
   ]
+
+-- CSS STYLES
+styles : { img : List ( String, String ) }
+styles =
+  {
+    img =
+      [ ( "width", "33%" )
+      , ( "border", "4px solid #337AB7")
+      ]
+  }
+
