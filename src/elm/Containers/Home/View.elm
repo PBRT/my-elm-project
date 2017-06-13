@@ -19,4 +19,10 @@ home model =
                 , onClick (T.Home <| HomeTypes.IncrementHome) ]
                 [ text("Increment me")]
     ]
+    , div [ class "classic-container" ] [
+        div [ style [("marginBottom", "10px")]] [ text("Current number: " ++ toString test) ]
+        , button [ class "btn btn-primary btn-lg"
+                  , onClick (T.FetchTodos) ]
+                  [ text("Fetch todos")]
+      ]
   ]

@@ -20,7 +20,7 @@ init = ( S.model , Cmd.none )
 view : T.Model -> Html T.Msg
 view model =
   div [ class "container", style [("margin-top", "60px"), ( "text-align", "center" )] ][    -- inline CSS (literal)
-    div [] [ navigation "SUCE" ]
+    div [] [ navigation "Increment" ]
     , div [ class "row" ][
       div [ class "col-xs-12" ][
         home model.home

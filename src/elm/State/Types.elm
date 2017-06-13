@@ -6,6 +6,7 @@ import Containers.Home.Types as HomeTypes
 type Msg
   = NoOp
   | Home HomeTypes.Msg
+  | FetchTodos
 
 -- MODEL
 type alias Model = {
