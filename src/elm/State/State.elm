@@ -1,6 +1,6 @@
 module State.State exposing (..)
 
-import Routing
+import Config.Routing as Routing
 import Navigation exposing (Location)
 
 -- Types
@@ -18,8 +18,10 @@ update msgFor model =
     T.Home msg -> ({ model | home = HomeState.update msg model.home }, Cmd.none)
     T.OnLocationChange location ->
         let
-          newRoute = Routing.parseLocation location
-        in ( { model | route = newRoute }, Cmd.none )
+          newRoute = Routing.parseLocation location model
+          cmd = Routing.getCmdFromRoute newRoute
+        in
+          ( { model | route = newRoute }, cmd )
     _ -> (model, Cmd.none)
 
 -- INIT
@@ -29,14 +31,17 @@ initialModel route =
     , route = route
     }
 
+model: T.Model
+model = { home = HomeState.model, route = T.HomeRoute}
+
 
 init : Location -> ( T.Model, Cmd T.Msg )
 init location =
     let
-        currentRoute =
-            Routing.parseLocation location
+      currentRoute = Routing.parseLocation location model
+      cmd = Routing.getCmdFromRoute currentRoute
     in
-        ( initialModel currentRoute, Cmd.none )
+        ( initialModel currentRoute, cmd )
 
 
 -- SUBSCRIBTIONS

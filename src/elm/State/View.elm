@@ -29,10 +29,10 @@ page : T.Model -> Html T.Msg
 page model =
     case model.route of
         T.HomeRoute ->
-            home model.home
+          home model.home
 
         T.TestRoute ->
-            testPage
+          testPage
 
         T.NotFoundRoute ->
-            notFound
+          notFound
